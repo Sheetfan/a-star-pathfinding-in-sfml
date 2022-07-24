@@ -5,8 +5,8 @@ namespace buzi {
 
 	class Grid {
 		struct Tile : public sf::RectangleShape {
-			int row;
-			int column;
+			int row; //which row is the tile in (y)
+			int column;//which column is the tile in (x)
 			
 			bool bVisited = false;
 			bool bObstacle = false;
@@ -18,9 +18,9 @@ namespace buzi {
 			Tile* parent = nullptr;
 		};
 		sf::RenderWindow* window;
-		int row;
-		int column;
-		int tileSize = 0.f;
+		int row;//total rows
+		int column;//total columns
+		int tileSize = 0.f; //each tile size
 
 		std::vector <Tile*> tiles;
 

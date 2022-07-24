@@ -19,6 +19,7 @@ namespace buzi {
 			}
 		}
 
+		//store the tiles neighour
 		for (int cRow = 0; cRow < row;cRow++) {
 			for (int cColumn = 0; cColumn < column; cColumn++) {
 				if (cRow > 0) {
@@ -125,14 +126,18 @@ namespace buzi {
 		for (auto &i : tiles) {
 			i->setFillColor(sf::Color::White);
 		}
+		//make the end tile yellow
 		if (tileEnd !=nullptr) {
 			tileEnd->setFillColor(sf::Color::Yellow);
 		}
+		//make all the obstacles black
 		for (auto & i : tiles) {
 			if (i->bObstacle) {
 				i->setFillColor(sf::Color::Black);
 			}
 		}
+		
+		//will start at the end tile and make the path back to the begin tile
 		if (tileEnd != nullptr) {
 			Tile* q = tileEnd;
 			while (q->parent !=nullptr){
@@ -140,6 +145,7 @@ namespace buzi {
 				q = q->parent;
 			}
 		}
+		//make the start tile red
 		if (tileStart != nullptr) {
 			tileStart->setFillColor(sf::Color::Red);
 		}
