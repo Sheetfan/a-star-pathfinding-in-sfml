@@ -23,17 +23,18 @@ namespace buzi {
 		for (int cRow = 0; cRow < row;cRow++) {
 			for (int cColumn = 0; cColumn < column; cColumn++) {
 				if (cRow > 0) {
-					tiles[cRow * row + cColumn]->neighbours.push_back(tiles[(cRow - 1) * row + (cColumn + 0)]);
+					tiles[cRow * column + cColumn]->neighbours.push_back(tiles[(cRow - 1) * column + (cColumn + 0)]);
 				}
 				if (cRow < row - 1) {
-					tiles[cRow * row + cColumn]->neighbours.push_back(tiles[(cRow + 1) * row + (cColumn + 0)]);
+					tiles[cRow * column + cColumn]->neighbours.push_back(tiles[(cRow + 1) * column + (cColumn + 0)]);
 				}
 				if (cColumn > 0) {
-					tiles[cRow * row + cColumn]->neighbours.push_back(tiles[(cRow - 0) * row + (cColumn - 1)]);
+					tiles[cRow * column + cColumn]->neighbours.push_back(tiles[(cRow - 0) * column + (cColumn - 1)]);
 				}
 				if (cColumn < row - 1) {
-					tiles[cRow * row + cColumn]->neighbours.push_back(tiles[(cRow - 0) * row + (cColumn + 1)]);
+					tiles[cRow * column + cColumn]->neighbours.push_back(tiles[(cRow - 0) * column + (cColumn + 1)]);
 				}
+				
 			} 		
 		}
 		tileStart = tiles[((row * (row * 1 / 2))) + (column * 1 / 4)];
@@ -43,28 +44,32 @@ namespace buzi {
 	void Grid::placeStartTile(){
 		sf::Vector2i mousePos = sf::Vector2i(sf::Mouse::getPosition(*window));
 		sf::Vector2i tilePos = mousePos / tileSize;
-		tileStart = tiles[tilePos.y * row + tilePos.x];
+
+		tileStart = tiles[(tilePos.y * column) + tilePos.x];
+		/*std::cout << (tilePos.y * column) + tilePos.x << "\n";
+		std::cout << tilePos.x << " " << tilePos.y << "\n";*/
+		//std::cout << mousePos.x << " " << mousePos.y << "\n";
 	}
 
 	void Grid::placeEndTile() {
 		sf::Vector2i mousePos = sf::Vector2i(sf::Mouse::getPosition(*window));
 		sf::Vector2i tilePos = mousePos / tileSize;
-		tileEnd = tiles[tilePos.y * row + tilePos.x];
+		tileEnd = tiles[tilePos.y * column + tilePos.x];
 	}
 	void Grid::placebObstacle(){
 		sf::Vector2i mousePos = sf::Vector2i(sf::Mouse::getPosition(*window));
 		sf::Vector2i tilePos = mousePos / tileSize;
-		tiles[tilePos.y * row + tilePos.x]->bObstacle = !tiles[tilePos.y * row
+		tiles[tilePos.y * column + tilePos.x]->bObstacle = !tiles[tilePos.y * row
 			+ tilePos.x]->bObstacle;
 
 	}
 	bool Grid::aStart() {
 		for (int cRow = 0; cRow < row; cRow++) {
 			for (int cColumn = 0; cColumn < column; cColumn++){
-				tiles[cRow * row + cColumn]->bVisited = false;
-				tiles[cRow * row + cColumn]->fGlobalGoal = INFINITY;
-				tiles[cRow * row + cColumn]->fLocalGoal = INFINITY;
-				tiles[cRow * row + cColumn]->parent = nullptr;
+				tiles[cRow * column + cColumn]->bVisited = false;
+				tiles[cRow * column + cColumn]->fGlobalGoal = INFINITY;
+				tiles[cRow * column + cColumn]->fLocalGoal = INFINITY;
+				tiles[cRow * column + cColumn]->parent = nullptr;
 			}
 		}
 			
@@ -90,11 +95,14 @@ namespace buzi {
 
 			listNotTestedTiles.sort([](const Tile* lhs, const Tile* rhs) { return lhs->fGlobalGoal < rhs->fGlobalGoal; });
 
-			while (!listNotTestedTiles.empty() && listNotTestedTiles.front()->bVisited)
+			while (!listNotTestedTiles.empty() && listNotTestedTiles.front()->bVisited){
 				listNotTestedTiles.pop_front();
+			}
+				
 
-			if (listNotTestedTiles.empty())
+			if (listNotTestedTiles.empty()) {
 				break;
+			}
 
 			currentTile = listNotTestedTiles.front();
 			currentTile->bVisited = true;
@@ -108,8 +116,7 @@ namespace buzi {
 				float fPossiblyLowerGoal = currentTile->fLocalGoal + distance(currentTile, nodeNeighbour);
 
 
-				if (fPossiblyLowerGoal < nodeNeighbour->fLocalGoal)
-				{
+				if (fPossiblyLowerGoal < nodeNeighbour->fLocalGoal){
 					nodeNeighbour->parent = currentTile;
 					nodeNeighbour->fLocalGoal = fPossiblyLowerGoal;
 
