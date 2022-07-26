@@ -20,7 +20,11 @@ namespace buzi {
 			else if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 				grid->placeStartTile();
 			}
-			if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Right) && (sf::Keyboard::
+				isKeyPressed(sf::Keyboard::LControl) || sf::Keyboard::isKeyPressed(sf::Keyboard::RControl))) {
+				grid->eraseObstacle();
+			}
+			else if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
 				grid->placebObstacle();
 			}
 

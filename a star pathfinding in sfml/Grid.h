@@ -32,6 +32,7 @@ namespace buzi {
 		void placeStartTile();
 		void placeEndTile();
 		void placebObstacle();
+		void eraseObstacle();
 		bool aStart();
 
 		void update();

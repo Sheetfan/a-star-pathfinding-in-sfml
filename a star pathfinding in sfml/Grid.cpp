@@ -44,11 +44,7 @@ namespace buzi {
 	void Grid::placeStartTile(){
 		sf::Vector2i mousePos = sf::Vector2i(sf::Mouse::getPosition(*window));
 		sf::Vector2i tilePos = mousePos / tileSize;
-
 		tileStart = tiles[(tilePos.y * column) + tilePos.x];
-		/*std::cout << (tilePos.y * column) + tilePos.x << "\n";
-		std::cout << tilePos.x << " " << tilePos.y << "\n";*/
-		//std::cout << mousePos.x << " " << mousePos.y << "\n";
 	}
 
 	void Grid::placeEndTile() {
@@ -59,10 +55,18 @@ namespace buzi {
 	void Grid::placebObstacle(){
 		sf::Vector2i mousePos = sf::Vector2i(sf::Mouse::getPosition(*window));
 		sf::Vector2i tilePos = mousePos / tileSize;
-		tiles[tilePos.y * column + tilePos.x]->bObstacle = !tiles[tilePos.y * row
-			+ tilePos.x]->bObstacle;
+		bool blackWhite = tiles[tilePos.y * column + tilePos.x]->bObstacle;
 
+		tiles[tilePos.y * column + tilePos.x]->bObstacle = true;
 	}
+	void Grid::eraseObstacle(){
+		sf::Vector2i mousePos = sf::Vector2i(sf::Mouse::getPosition(*window));
+		sf::Vector2i tilePos = mousePos / tileSize;
+		bool blackWhite = tiles[tilePos.y * column + tilePos.x]->bObstacle;
+
+		tiles[tilePos.y * column + tilePos.x]->bObstacle = false;
+	}
+
 	bool Grid::aStart() {
 		for (int cRow = 0; cRow < row; cRow++) {
 			for (int cColumn = 0; cColumn < column; cColumn++){
@@ -143,7 +147,6 @@ namespace buzi {
 				i->setFillColor(sf::Color::Black);
 			}
 		}
-		
 		//will start at the end tile and make the path back to the begin tile
 		if (tileEnd != nullptr) {
 			Tile* q = tileEnd;
