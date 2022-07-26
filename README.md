@@ -1,6 +1,6 @@
 # a star pathfinding in sfml 2.5.1
 
-controls:<br/>
+## controls:<br/>
 left click - to place a start point<br/>
 ctrl + left click - to place end a point<br/>
 
